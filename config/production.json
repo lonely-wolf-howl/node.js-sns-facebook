@@ -1,0 +1,12 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 3000
+  },
+  "database": {
+    "type": "mongodb"
+  },
+  "cookie": {
+    "expires": 3600000
+  }
+}

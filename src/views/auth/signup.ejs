@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+
+<div class="auth-wrapper">
+  <form method="POST" action="/auth/signup">
+    <div class="text-center">
+      <h3 class="mb-3 font-weight-normal">회원가입</h3>
+    </div>
+    <div class="mb-3">
+      <label for="email">이메일</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="password">비밀번호</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="username">이름</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">회원가입</button>
+    <div class="text-end mt-2">
+      이미 계정이 있으신가요? <a href="/login">로그인</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
