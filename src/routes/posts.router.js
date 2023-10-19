@@ -33,8 +33,10 @@ postsRouter.post('/', checkAuthenticated, upload, async (req, res, next) => {
         username: req.user.username,
       },
     });
+    req.flash('success', '게시물 생성 성공.');
     res.redirect('posts');
   } catch (error) {
+    req.flash('error', '게시물 생성 실패.');
     next(error);
   }
 });
@@ -48,7 +50,6 @@ postsRouter.get('/', checkAuthenticated, async (req, res) => {
 
     res.render('posts', {
       posts,
-      currentUser: req.user,
     });
   } catch (error) {
     console.log(error);

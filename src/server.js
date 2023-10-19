@@ -3,6 +3,7 @@ const app = express();
 
 const Connect = require('./database/connect');
 const path = require('path');
+const flash = require('connect-flash');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
@@ -14,6 +15,7 @@ const commentsRouter = require('./routes/comments.router');
 const profileRouter = require('./routes/profile.router');
 const likesRouter = require('./routes/likes.router');
 const friendsRouter = require('./routes/friends.router');
+const flashRouter = require('./routes/flash.router');
 
 const config = require('config');
 
@@ -25,6 +27,7 @@ class Application {
     this.database();
     this.middlewares();
     this.routes();
+    this.errorHandler();
     this.startServer();
   }
 
@@ -75,6 +78,16 @@ class Application {
     app.use(passport.initialize());
     app.use(passport.session());
     require('./config/passport');
+
+    // connect-flash
+    app.use(flash());
+
+    app.use((req, res, next) => {
+      res.locals.success = req.flash('success');
+      res.locals.error = req.flash('error');
+      res.locals.currentUser = req.user;
+      next();
+    });
   }
 
   routes() {
@@ -85,6 +98,14 @@ class Application {
     app.use('/profile/:id', profileRouter);
     app.use('/friends', friendsRouter);
     app.use('/posts/:id/likes', likesRouter);
+    app.use('/flash', flashRouter);
+  }
+
+  errorHandler() {
+    app.use((error, req, res, next) => {
+      res.status(error.status || 500);
+      res.send(error.message);
+    });
   }
 
   startServer() {
