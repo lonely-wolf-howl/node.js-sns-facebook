@@ -3,9 +3,10 @@ const app = express();
 
 const Connect = require('./database/connect');
 const path = require('path');
-const flash = require('connect-flash');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const flash = require('connect-flash');
+const methodOverride = require('method-override');
 
 // import routers
 const mainRouter = require('./routes/main.router');
@@ -81,6 +82,9 @@ class Application {
 
     // connect-flash
     app.use(flash());
+
+    // method-override
+    app.use(methodOverride('_method'));
 
     app.use((req, res, next) => {
       res.locals.success = req.flash('success');

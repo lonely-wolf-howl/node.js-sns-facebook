@@ -1,7 +1,10 @@
 const express = require('express');
 const postsRouter = express.Router();
 
-const { checkAuthenticated } = require('../middleware/auth');
+const {
+  checkAuthenticated,
+  checkPostOwnership,
+} = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
 
@@ -53,6 +56,23 @@ postsRouter.get('/', checkAuthenticated, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+  }
+});
+
+postsRouter.get('/:id/edit', checkPostOwnership, (req, res) => {
+  res.render('posts/edit', {
+    post: req.post,
+  });
+});
+
+postsRouter.put('/:id', checkPostOwnership, async (req, res) => {
+  try {
+    await Post.findByIdAndUpdate(req.params.id, req.body);
+    req.flash('success', '게시물 수정 성공.');
+    res.redirect('/posts');
+  } catch (error) {
+    req.flash('error', '게시물 수정 실패.');
+    res.redirect('/posts');
   }
 });
 
