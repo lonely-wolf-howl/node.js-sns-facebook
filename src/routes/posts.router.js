@@ -9,8 +9,6 @@ const multer = require('multer');
 const path = require('path');
 
 const Post = require('../models/posts.model');
-// not required
-const Comment = require('../models/comments.model');
 
 const storageEngine = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -37,14 +35,14 @@ postsRouter.post('/', checkAuthenticated, upload, async (req, res, next) => {
       },
     });
     req.flash('success', '게시물 생성 성공.');
-    res.redirect('posts');
-  } catch (error) {
+    res.redirect('back');
+  } catch {
     req.flash('error', '게시물 생성 실패.');
-    next(error);
+    res.redirect('back');
   }
 });
 
-postsRouter.get('/', checkAuthenticated, async (req, res) => {
+postsRouter.get('/', checkAuthenticated, async (req, res, next) => {
   try {
     const posts = await Post.find()
       .populate('comments')
@@ -54,8 +52,9 @@ postsRouter.get('/', checkAuthenticated, async (req, res) => {
     res.render('posts', {
       posts,
     });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    req.flash('error', '게시물 조회 중 오류가 발생했습니다.');
+    res.redirect('back');
   }
 });
 
@@ -65,14 +64,25 @@ postsRouter.get('/:id/edit', checkPostOwnership, (req, res) => {
   });
 });
 
-postsRouter.put('/:id', checkPostOwnership, async (req, res) => {
+postsRouter.put('/:id', checkPostOwnership, async (req, res, next) => {
   try {
     await Post.findByIdAndUpdate(req.params.id, req.body);
     req.flash('success', '게시물 수정 성공.');
-    res.redirect('/posts');
-  } catch (error) {
+    res.redirect('back');
+  } catch {
     req.flash('error', '게시물 수정 실패.');
-    res.redirect('/posts');
+    res.redirect('back');
+  }
+});
+
+postsRouter.delete('/:id', checkPostOwnership, async (req, res, next) => {
+  try {
+    await Post.findByIdAndDelete(req.params.id);
+    req.flash('success', '게시물 삭제 성공.');
+    res.redirect('back');
+  } catch {
+    req.flash('error', '게시물 삭제 실패.');
+    res.redirect('back');
   }
 });
 
