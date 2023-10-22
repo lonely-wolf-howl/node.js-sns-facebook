@@ -6,9 +6,7 @@
     <div class="card-body">
       <form action="/posts/<%= post._id %>?_method=PUT" method="POST">
         <div class="form-group">
-          <textarea class="form-control" id="desc" name="description">
-<%= post.description %>
-          </textarea>
+          <textarea class="form-control" id="desc" name="description"><%= post.description %></textarea>
         </div>
         <button type="submit" class="btn btn-primary mt-3">수정하기</button>
       </form>

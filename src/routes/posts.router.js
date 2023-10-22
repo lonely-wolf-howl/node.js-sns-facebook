@@ -53,7 +53,7 @@ postsRouter.get('/', checkAuthenticated, async (req, res, next) => {
       posts,
     });
   } catch {
-    req.flash('error', '게시물 조회 중 오류가 발생했습니다.');
+    req.flash('error', '게시물 목록 조회 중 오류가 발생했습니다.');
     res.redirect('back');
   }
 });
@@ -68,7 +68,7 @@ postsRouter.put('/:id', checkPostOwnership, async (req, res, next) => {
   try {
     await Post.findByIdAndUpdate(req.params.id, req.body);
     req.flash('success', '게시물 수정 성공.');
-    res.redirect('back');
+    res.redirect('/posts');
   } catch {
     req.flash('error', '게시물 수정 실패.');
     res.redirect('back');
@@ -79,7 +79,7 @@ postsRouter.delete('/:id', checkPostOwnership, async (req, res, next) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
     req.flash('success', '게시물 삭제 성공.');
-    res.redirect('back');
+    res.redirect('/posts');
   } catch {
     req.flash('error', '게시물 삭제 실패.');
     res.redirect('back');

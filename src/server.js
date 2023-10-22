@@ -101,7 +101,7 @@ class Application {
     app.use('/posts/:id/comments', commentsRouter);
     app.use('/profile/:id', profileRouter);
     app.use('/friends', friendsRouter);
-    app.use('/posts/:id/likes', likesRouter);
+    app.use(likesRouter);
     app.use('/flash', flashRouter);
   }
 

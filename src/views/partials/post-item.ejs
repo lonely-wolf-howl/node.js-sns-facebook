@@ -47,6 +47,35 @@
     <img class="w-100" src="/assets/images/<%= post.image %>" />
     <% } %>
 
+    <!-- 게시물 좋아요 -->
+    <hr class="mt-1" />
+    <div class="d-flex justify-content-between">
+      <div class="row">
+        <form action="/posts/<%= post._id %>/likes?_method=PUT" method="POST">
+          <!-- 이미 좋아요를 눌렀는지 확인 -->
+          <% if (post.likes.find(like => like === currentUser._id.toString())) { %>
+          <button type="submit" class="no-outline">
+            <img src="/assets/images/like-on.png" height="20px" />
+            <span class="ms-1"> <%= post.likes.length %></span>
+          </button>
+          <% } else { %>
+          <button type="submit" class="no-outline">
+            <img src="/assets/images/like-off.png" height="20px" />
+            <span class="ms-1"> <%= post.likes.length %></span>
+          </button>
+          <% } %>
+        </form>
+      </div>
+
+      <a
+        class="ms-auto pe-2"
+        data-bs-toggle="collapse"
+        href="#post<%= post._id %>"
+      >
+        댓글 <%= post.comments.length %>
+      </a>
+    </div>
+
     <!-- 게시물 댓글 -->
     <hr class="mt-1" />
     <div class="collapse show" id="post<%= post._id %>">
@@ -85,7 +114,8 @@
       </div>
       <% } %>
     </div>
-    <!-- 댓글 작성 -->
+
+    <!-- 댓글 작성하기 -->
     <div>
       <form method="POST" action="/posts/<%= post._id %>/comments">
         <div class="form-group">

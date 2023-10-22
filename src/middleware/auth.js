@@ -50,6 +50,7 @@ async function checkCommentOwnership(req, res, next) {
         res.redirect('back');
       } else {
         if (comment.author.id.equals(req.user._id)) {
+          req.comment = comment
           next();
         } else {
           req.flash('error', '해당 댓글에 대한 권한이 없습니다.');
