@@ -6,29 +6,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SNS</title>
     <!-- custom css -->
-    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="/styles/main.css" />
     <!-- bootstrap -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
     <!-- font-awesome -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
   </head>
+
   <body>
+    <nav
+      class="navbar navbar-dark bg-dark shadow-sm fixed-top navbar-expand-lg"
+    >
+      <div class="container">
+        <a class="navbar-brand">facebook</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarToggle"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <% if (!currentUser) { %>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/signup">회원가입</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">로그인</a>
+            </li>
+          </ul>
+          <% } else { %>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/posts">게시물</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/friends">친구</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/<%= currentUser._id %>">
+                내 정보
+              </a>
+            </li>
+            <li class="nav-item">
+              <form action="/auth/logout" method="POST">
+                <button type="submit" class="nav-link no-outline">
+                  로그아웃
+                </button>
+              </form>
+            </li>
+          </ul>
+          <% } %>
+        </div>
+      </div>
+    </nav>
+    <br />
+    <br />
+    <br />
+
     <div class="container">
       <% if (error && error.length > 0) { %>
       <div class="alert alert-danger" role="alert"><%= error %></div>
-      <% } %>
-      <% if (success && success.length > 0) { %>
+      <% } %> <% if (success && success.length > 0) { %>
       <div class="alert alert-success" role="alert"><%= success %></div>
       <% } %>
     </div>
